@@ -56,3 +56,12 @@ Anova(my_mod, type = 3)
 ```{r}
 summary(my_mod)
 ```
+
+Additional Questions
+- How well does the exploratory model appear to explain cover?
+  
+- Which explanatory variables are the most important?
+
+- Do model diagnostics indicate any problems with violations of OLS assumptions?
+
+- Are you able to explain variance in one species better than another, why might this be the case?
