@@ -1,0 +1,20 @@
+---
+title: "Univariate Homework"
+author: "Morgan Lattomus"
+date: "2/1/2000"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+
+```{r}
+trees <- read.csv('https://raw.githubusercontent.com/dmcglinn/quant_methods/gh-pages/data/treedata_subset.csv')
+```
+
+1. Carry out an exploratory analysis using the tree dataset. Metadata for the tree study can be found here. Specifically, I would like you to develop and compare models for species cover for a habitat generalist Acer rubrum (Red maple) and a habitat specialist Abies fraseri (Frasier fir). Because this dataset includes both continuous and discrete explanatory variables use the function Anova in the packages car as such
+
+```{r}
+install.packages('car')
+```
