@@ -18,3 +18,33 @@ trees <- read.csv('https://raw.githubusercontent.com/dmcglinn/quant_methods/gh-p
 ```{r}
 install.packages('car')
 ```
+
+```{r}
+sp_cov = with(trees, tapply(cover, list(plotID, spcode), 
+  function(x) round(mean(x))))
+sp_cov = ifelse(is.na(sp_cov), 0, sp_cov)
+sp_cov = data.frame(plotID = row.names(sp_cov), sp_cov)
+```
+
+```{r}
+cols_to_select = c('elev', 'tci', 'streamdist', 'disturb', 'beers')
+env = aggregate(trees[ , cols_to_select], by = list(trees$plotID), 
+                function(x) x[1])
+names(env)[1] = 'plotID'
+```
+
+```{r}
+site_dat = merge(sp_cov, env, by='plotID')
+```
+
+```{r}
+abies = site_dat[ , c('ABIEFRA', cols_to_select)]
+acer  = site_dat[ , c('ACERRUB', cols_to_select)]
+names(abies)[1] = 'cover'
+names(acer)[1] = 'cover'
+```
+
+```{r}
+libary(car)
+my_mod <- lm('abies' )
+```
