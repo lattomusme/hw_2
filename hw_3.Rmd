@@ -45,6 +45,14 @@ names(acer)[1] = 'cover'
 ```
 
 ```{r}
-libary(car)
-my_mod <- lm('abies' )
+library('car')
+```
+
+```{r}
+my_mod <- lm(abies$cover ~ acer$cover, data = trees) 
+Anova(my_mod, type = 3)
+```
+
+```{r}
+summary(my_mod)
 ```
