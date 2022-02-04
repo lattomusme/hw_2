@@ -15,9 +15,11 @@ trees <- read.csv('https://raw.githubusercontent.com/dmcglinn/quant_methods/gh-p
 
 1. Carry out an exploratory analysis using the tree dataset. Metadata for the tree study can be found here. Specifically, I would like you to develop and compare models for species cover for a habitat generalist Acer rubrum (Red maple) and a habitat specialist Abies fraseri (Frasier fir). Because this dataset includes both continuous and discrete explanatory variables use the function Anova in the packages car as such
 
-```{r}
-install.packages('car')
+```{r loading dependencies}
+#install.packages('car')
+library(car)
 ```
+
 
 ```{r}
 sp_cov = with(trees, tapply(cover, list(plotID, spcode), 
@@ -45,10 +47,6 @@ names(acer)[1] = 'cover'
 ```
 
 ```{r}
-library('car')
-```
-
-```{r}
 my_mod <- lm(abies$cover ~ acer$cover, data = trees) 
 Anova(my_mod, type = 3)
 ```
@@ -57,11 +55,42 @@ Anova(my_mod, type = 3)
 summary(my_mod)
 ```
 
+```{r}
+par(mfrow=c(1,2))
+plot(abies, acer ~ cover, data = trees, xlab = 'Tree Species',ylab = 'Cover')
+abline(my_mod)
+```
 Additional Questions
-- How well does the exploratory model appear to explain cover?
+- How well does the exploratory model appear to explain cover? 
+
+  Explains it well, a lot of the values between the summary and the Anova were very similar, implying that 
   
 - Which explanatory variables are the most important?
 
 - Do model diagnostics indicate any problems with violations of OLS assumptions?
 
 - Are you able to explain variance in one species better than another, why might this be the case?
+
+
+2. Re-examine your solutions to the question above but from the perspective of a General Linear Model (GLM) with a Poisson error term. #graphically
+
+```{r}
+acer_poi = glm(cover ~ tci + elev + streamdist + disturb + beers, data = trees,
+              family='poisson')
+acer_poi
+```
+
+```{r}
+abies_poi = glm(cover ~ tci + elev + streamdist + disturb + beers , data = trees,
+              family='poisson')
+abies_poi
+```
+
+```{r}
+psuedo_r2 = function(glm_mod) {
+  1 - glm_mod$deviance / glm_mod$null.deviance
+  }
+psuedo_r2
+```
+
+3. Provide a plain English summary of what you have found and what conclusions we can take away from your analysis?
