@@ -30,10 +30,7 @@ quantile(log10(abu))
 plot(density(log10(abu)))
 ```
 
-```{r}
-which(BCI[ , 65])
-which(BCI[ , 58])
-
+```{r separating species}
 rare_sp <- BCI[ , 65]
 comm_sp <- BCI [ , 58]
 
@@ -54,4 +51,7 @@ plot(geod, commd, main = 'common species')
 lines(lowess(geod, commd), lwd =2, col ='red')
 ```
 
-  The rare species (Erythrina costaricensis & Inga acuminata) have a lower geographical distribution, which is to be expected as they are the less commonly found group of species, whereas the common species chosen  (Sterculia apetala & Symphonia globulifera) have a greater geographical distribution. There is a slight correlation found in the rare species 
+  The rare species (Erythrina costaricensis & Inga acuminata) have a lower geographical distribution, which is to be expected as they are the less commonly found group of species, whereas the common species chosen  (Sterculia apetala & Symphonia globulifera) have a greater geographical distribution. There is a slight correlation found in the rare species and their geographical location, but the common species is much more generalized in its geography. 
+  
+2. Build two generalized linear models to predict the abundance of the species Drypetes standleyi using the abundance of other tree species in the study site. Specifically examine the following species as predictor variables.
+
