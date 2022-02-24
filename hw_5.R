@@ -25,6 +25,10 @@ sr <- rowSums(BCI > 0)
 hist(sr)
 plot(BCI_xy, cex = sr/max(sr))
 
+sr_dist <- dist(sr)
+xy_dist <- dist(BCI_xy)
+max_dist <- max(xy_dist) / 2
+
 abu <- colSums(BCI)
 quantile(log10(abu))
 plot(density(log10(abu)))
@@ -51,7 +55,44 @@ plot(geod, commd, main = 'common species')
 lines(lowess(geod, commd), lwd =2, col ='red')
 ```
 
+```{r mantel correlogram}
+rare_corlog = mantel.correlog(rared, BCI_xy)
+comm_corlog = mantel.correlog(commd, BCI_xy)
+rare_corlog
+comm_corlog
+```
+
   The rare species (Erythrina costaricensis & Inga acuminata) have a lower geographical distribution, which is to be expected as they are the less commonly found group of species, whereas the common species chosen  (Sterculia apetala & Symphonia globulifera) have a greater geographical distribution. There is a slight correlation found in the rare species and their geographical location, but the common species is much more generalized in its geography. 
   
 2. Build two generalized linear models to predict the abundance of the species Drypetes standleyi using the abundance of other tree species in the study site. Specifically examine the following species as predictor variables.
+```{r loading predictor species}
+sp_ids = c("Cordia.lasiocalyx", "Hirtella.triandra",
+           "Picramnia.latifolia", "Quassia.amara",
+           "Tabernaemontana.arborea", "Trattinnickia.aspera", 
+           "Xylopia.macrantha")
+
+sp_cord <- "Cordia.lasiocalyx"
+sp_hirt <- "Hirtella.triandra"
+sp_pic <- "Picramnia.latifolia"
+sp_quas <- "Quassia.amara"
+sp_tab <- "Tabernaemontana.arborea"
+sp_trat <- "Trattinnickia.aspera"
+sp_xyl <- "Xylopia.macrantha"
+sp_dry <- "Drypetes.standleyi"
+```
+
+```{r model 1}
+library(nlme)
+names(BCI)
+
+pred_sp <- BCI[ , sp_ids]
+mod_abu <- colSums(pred_sp)
+resp_sp <- BCI[ , "Drypetes.standleyi"]
+
+names(pred_sp) <- paste('sp', letters[1:7], sep='_')
+head(pred_sp)
+
+```
+
+
 
