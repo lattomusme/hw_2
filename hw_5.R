@@ -70,15 +70,6 @@ sp_ids = c("Cordia.lasiocalyx", "Hirtella.triandra",
            "Picramnia.latifolia", "Quassia.amara",
            "Tabernaemontana.arborea", "Trattinnickia.aspera", 
            "Xylopia.macrantha")
-
-sp_cord <- "Cordia.lasiocalyx"
-sp_hirt <- "Hirtella.triandra"
-sp_pic <- "Picramnia.latifolia"
-sp_quas <- "Quassia.amara"
-sp_tab <- "Tabernaemontana.arborea"
-sp_trat <- "Trattinnickia.aspera"
-sp_xyl <- "Xylopia.macrantha"
-sp_dry <- "Drypetes.standleyi"
 ```
 
 ```{r model 1}
@@ -89,10 +80,32 @@ pred_sp <- BCI[ , sp_ids]
 mod_abu <- colSums(pred_sp)
 resp_sp <- BCI[ , "Drypetes.standleyi"]
 
-names(pred_sp) <- paste('sp', letters[1:7], sep='_')
-head(pred_sp)
+sp_a <- BCI$Cordia.lasiocalyx
+sp_b <- BCI$Hirtella.triandra
+sp_c <- BCI$Picramnia.latifolia
+sp_d <- BCI$Quassia.amara
+sp_e <- BCI$Tabernaemontana.arborea
+sp_f <- BCI$Trattinnickia.aspera
+sp_g <- BCI$Xylopia.macrantha
+
+```
+```{r one species as a predictor variable}
+abu_lm <- gls(resp_sp ~ sp_a , data = BCI_xy)
+
+plot(Variogram(abu_lm, form= ~ x + y))
+
+```
+  Based on the above graph, there appears to be some correlation between the two variables.
+
+
+```{r using all species as predictor variables}
+abus_lm <- gls(resp_sp ~ sp_a + sp_b + sp_c + sp_d + sp_e + sp_f + sp_g , data = BCI_xy)
+
+plot(Variogram(abus_lm, form= ~ x + y))
 
 ```
 
-
-
+```{r comparing using an anova}
+anova(abus_lm)
+```
+  While the ANOVA test shows a significant difference between the predictor species and the response species, the variogram does not show this relationship. This is most likely because the variogram does factor in the spatial error, which might be the contributing factor to their significant relationship seen in the ANOVA. Once that is factored into the analysis, the significant relationship is no longer observed. 
